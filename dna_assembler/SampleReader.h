@@ -14,33 +14,41 @@ enum KSelectMethod {
 
 class SampleReader {
 public:
-	SampleReader() : K_(2), N_(20), kSelectMethod_(MEDIAN_VALUE) {
-		samples_.insert(shared_ptr<std::string>(new std::string("abc")));
-		samples_.insert(shared_ptr<std::string>(new std::string("QWE")));
-		samples_.insert(shared_ptr<std::string>(new std::string("23325445")));
-	}
+	SampleReader(std::istream& = std::cin);
 	
 	// sets K value, returns 0 on success
 	int setK(int k) {
-		if(k > 1)
+		if(k <= 1)
 			return -1;
+
 		K_ = k;
 		kSelectMethod_ = FIXED;
 		return 0;
 	}
 
-	// selects K value selection method, returns 0 on success
+	// prints out all read samples to the given output stream
+	friend std::ostream& operator<<(std::ostream&, SampleReader&);
+
+	// chooses K value selection method, returns 0 on success
 	int setKSelectMethod(const KSelectMethod&, int = 20);
 
 	// reads k-mers from read samples
 	int parse(std::set<shared_ptr<std::string> >&);
 
-	// prints all samples to the given text stream
-	friend std::ostream& operator<<(std::ostream&, SampleReader&);
+private:
+	// calculates K value for further computation
+	int obtainK();
 
 protected:
 	int K_;
 	int N_;
 	KSelectMethod kSelectMethod_;
 	std::set<shared_ptr<std::string> > samples_;
+
+private:
+	class StringComparator {
+		bool operator()(const std::string &a, const std::string &b){
+			return a.size() < b.size();
+		}
+	};
 };

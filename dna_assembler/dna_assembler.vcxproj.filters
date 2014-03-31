@@ -23,13 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StdInSampleReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SampleReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileSampleReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
