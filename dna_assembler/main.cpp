@@ -4,8 +4,11 @@
 #include<vector>
 
 #include<boost\program_options.hpp>
+#include<boost\graph\adjacency_list.hpp>
+#include<boost\graph\graphviz.hpp>
 
 #include "SampleReader.h"
+#include "SharedStringComparator.h"
 
 using namespace boost::program_options;
 
@@ -94,10 +97,29 @@ int main(int argc, char **argv) {
 	// main program
 	std::cout << "MAIN PROGRAM" << std::endl;
 
-	std::set<shared_ptr<std::string> > k_mers;
-	sample_reader->parse(k_mers);
-	for(std::set<shared_ptr<std::string> >::const_iterator it = k_mers.begin(); it != k_mers.end(); ++it)
-		std::cout << **it << std::endl;
+	std::vector<std::string> vertices;
+	std::set<std::pair<int, int> > edges;
+
+	sample_reader->parse(vertices, edges);
+
+	boost::adjacency_list<listS, vecS, directedS, property<vertex_name_t, std::string> > de_bruijn_graph(edges.begin(), edges.end(), vertices.size());
+
+	// open file for DOT format graph output
+	if(vm.count("d")) {
+		std::string dot_file_name = vm["d"].as<std::string>();
+		std::ofstream dot_file_stream(dot_file_name, std::ofstream::out | std::ofstream::trunc);
+		if(dot_file_stream == 0) {
+			std::cerr << "Could not open file \"" << dot_file_name << "\" for writing." << std::endl;
+			return 0;
+		}
+		boost::write_graphviz(dot_file_stream, de_bruijn_graph, make_label_writer(&vertices[0]));
+	}
+
+	for(std::vector<std::string>::const_iterator it = vertices.begin(); it != vertices.end(); ++it)
+		std::cout << *it << std::endl;
+
+	for(std::set<std::pair<int, int> >::const_iterator it = edges.begin(); it != edges.end(); ++it)
+		std::cout << it->first  << " - " << it->second << std::endl;
 
 	return 0;
 }

@@ -1,9 +1,5 @@
 #include "SampleReader.h"
 
-#include<string>
-#include<vector>
-#include<algorithm>
-
 SampleReader::SampleReader(std::istream &in_stream) : K_(5), N_(20), kSelectMethod_(FIXED) {
 	shared_ptr<std::string> string_ptr(new std::string());
 	in_stream >> *string_ptr;
@@ -66,14 +62,14 @@ int SampleReader::obtainK() {
 		K_ = length / samples_.size();
 	} else if(kSelectMethod_ == MEDIAN_VALUE) {
 		std::vector<shared_ptr<std::string> > samples(samples_.begin(), samples_.end());
-		std::sort(samples.begin(), samples.end(), [](const shared_ptr<std::string> &a, const shared_ptr<std::string> &b){ return a->size() < b->size(); });
+		std::sort(samples.begin(), samples.end(), SharedStringComparator());
 		if(samples.size() % 2 == 0)
 			K_ = (samples[samples.size() / 2]->size() + samples[samples.size() / 2 - 1]->size()) / 2;
 		else
 			K_ = samples[samples.size() / 2]->size();
 	} else if(kSelectMethod_ == N_PER_CENT) {
 		std::vector<shared_ptr<std::string> > samples(samples_.begin(), samples_.end());
-		std::sort(samples.begin(), samples.end(), [](const shared_ptr<std::string> &a, const shared_ptr<std::string> &b){ return a->size() < b->size(); });
+		std::sort(samples.begin(), samples.end(), SharedStringComparator());
 		if(N_ == 0)
 			K_ = samples[0]->size();
 		else
@@ -82,16 +78,35 @@ int SampleReader::obtainK() {
 	return 0;
 }
 
-int SampleReader::parse(std::set<shared_ptr<std::string> > &k_mers) {
+int SampleReader::parse(std::vector<std::string> &vertices, std::set<std::pair<int, int> > &edges) {
 	if(obtainK() != 0)
 		return -1;
+	
+	vertices.clear();
+	edges.clear();
+	std::unordered_map<std::string, int> tmp_vertices;
 
-	k_mers.clear();
 	for(std::set<shared_ptr<std::string> >::const_iterator it = samples_.begin(); it != samples_.end(); ++it) {
-		for(int i = 0; i + K_ <= static_cast<int>((*it)->length()); ++i) {
-			k_mers.insert(shared_ptr<std::string>(new std::string((*it)->substr(i, K_))));
+		if(K_ <= static_cast<int>((*it)->length())) {
+			std::string src_vertex(""), dest_vertex("");
+
+			src_vertex = (*it)->substr(0, K_ - 1);
+			if(tmp_vertices.count(src_vertex) == 0)
+				tmp_vertices[src_vertex] = tmp_vertices.size();
+
+			for(int i = 0; K_ + i < static_cast<int>((*it)->length()); ++i) {
+				dest_vertex = (*it)->substr(i + 1, K_ - 1);
+				if(tmp_vertices.count(dest_vertex) == 0)
+					tmp_vertices[dest_vertex] = tmp_vertices.size();
+				edges.insert(std::make_pair(tmp_vertices[src_vertex], tmp_vertices[dest_vertex]));
+				src_vertex = dest_vertex;
+			}
 		}
 	}
+
+	vertices.resize(tmp_vertices.size());
+	for(std::unordered_map<std::string, int>::const_iterator it = tmp_vertices.begin(); it != tmp_vertices.end(); ++it)
+		vertices[it->second] = it->first;
 	
 	return 0;
 }
