@@ -6,6 +6,7 @@
 #include<boost\program_options.hpp>
 #include<boost\graph\adjacency_list.hpp>
 #include<boost\graph\graphviz.hpp>
+#include<boost\graph\graph_traits.hpp>
 
 #include "SampleReader.h"
 #include "SharedStringComparator.h"
@@ -94,15 +95,13 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	// main program
-	std::cout << "MAIN PROGRAM" << std::endl;
-
 	std::vector<std::string> vertices;
 	std::set<std::pair<int, int> > edges;
 
 	sample_reader->parse(vertices, edges);
 
-	boost::adjacency_list<listS, vecS, directedS, property<vertex_name_t, std::string> > de_bruijn_graph(edges.begin(), edges.end(), vertices.size());
+	typedef boost::adjacency_list<listS, vecS, directedS> Graph;
+	Graph de_bruijn_graph(edges.begin(), edges.end(), vertices.size());
 
 	// open file for DOT format graph output
 	if(vm.count("d")) {
@@ -115,11 +114,39 @@ int main(int argc, char **argv) {
 		boost::write_graphviz(dot_file_stream, de_bruijn_graph, make_label_writer(&vertices[0]));
 	}
 
-	for(std::vector<std::string>::const_iterator it = vertices.begin(); it != vertices.end(); ++it)
-		std::cout << *it << std::endl;
+	boost::graph_traits<Graph>::vertex_iterator v, v_end;
+	std::tie(v, v_end) = boost::vertices(de_bruijn_graph);
+	
+	boost::graph_traits<Graph>::out_edge_iterator e, e_end, e_tmp;
+	std::tie(e, e_end) = boost::out_edges(*v, de_bruijn_graph);
 
-	for(std::set<std::pair<int, int> >::const_iterator it = edges.begin(); it != edges.end(); ++it)
-		std::cout << it->first  << " - " << it->second << std::endl;
+	std::list<boost::graph_traits<Graph>::vertex_descriptor> sequence_vertices;
+	boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor;
+	vertex_descriptor = boost::source(*e, de_bruijn_graph);
+	sequence_vertices.push_back(vertex_descriptor);
+	
+	while(e != e_end) {
+		vertex_descriptor = boost::target(*e, de_bruijn_graph);
+		sequence_vertices.push_back(vertex_descriptor);
+
+		e_tmp = e;
+		std::tie(e, e_end) = boost::out_edges(vertex_descriptor, de_bruijn_graph);
+		boost::remove_edge(e_tmp, de_bruijn_graph);	
+	}
+	
+	// main program
+	std::cout << "MAIN PROGRAM" << std::endl;
+	for(std::list<boost::graph_traits<Graph>::vertex_descriptor>::const_iterator it = sequence_vertices.begin(); it != sequence_vertices.end(); ++it)
+		std::cout << vertices[*it] << std::endl;
+
+
+		std::string dot_file_name("tmp.txt");
+		std::ofstream dot_file_stream(dot_file_name, std::ofstream::out | std::ofstream::trunc);
+		if(dot_file_stream == 0) {
+			std::cerr << "Could not open file \"" << dot_file_name << "\" for writing." << std::endl;
+			return 0;
+		}
+		boost::write_graphviz(dot_file_stream, de_bruijn_graph, make_label_writer(&vertices[0]));
 
 	return 0;
 }
