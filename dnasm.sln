@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnasm-app", "dnasm-app\dnasm-app.vcxproj", "{892F608F-27AB-4A46-B5B6-F38588C6B119}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnasm-test", "dnasm-test\dnasm-test.vcxproj", "{125BABAF-EC1B-4526-98CE-A93081D980A9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnasm-lib", "dnasm-lib\dnasm-lib.vcxproj", "{72F22DF6-D47E-4286-9587-DA6167609611}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +17,14 @@ Global
 		{892F608F-27AB-4A46-B5B6-F38588C6B119}.Debug|Win32.Build.0 = Debug|Win32
 		{892F608F-27AB-4A46-B5B6-F38588C6B119}.Release|Win32.ActiveCfg = Release|Win32
 		{892F608F-27AB-4A46-B5B6-F38588C6B119}.Release|Win32.Build.0 = Release|Win32
+		{125BABAF-EC1B-4526-98CE-A93081D980A9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{125BABAF-EC1B-4526-98CE-A93081D980A9}.Debug|Win32.Build.0 = Debug|Win32
+		{125BABAF-EC1B-4526-98CE-A93081D980A9}.Release|Win32.ActiveCfg = Release|Win32
+		{125BABAF-EC1B-4526-98CE-A93081D980A9}.Release|Win32.Build.0 = Release|Win32
+		{72F22DF6-D47E-4286-9587-DA6167609611}.Debug|Win32.ActiveCfg = Debug|Win32
+		{72F22DF6-D47E-4286-9587-DA6167609611}.Debug|Win32.Build.0 = Debug|Win32
+		{72F22DF6-D47E-4286-9587-DA6167609611}.Release|Win32.ActiveCfg = Release|Win32
+		{72F22DF6-D47E-4286-9587-DA6167609611}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
