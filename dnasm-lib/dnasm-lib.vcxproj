@@ -11,10 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assembler.cpp" />
+    <ClCompile Include="FixedKSelector.cpp" />
+    <ClCompile Include="Generator.cpp" />
+    <ClCompile Include="MeanKSelector.cpp" />
+    <ClCompile Include="PercentageKSelector.cpp" />
     <ClCompile Include="SampleReader.cpp" />
     <ClCompile Include="Sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="Assembler.h" />
+    <ClInclude Include="FixedKSelector.h" />
+    <ClInclude Include="Generator.h" />
+    <ClInclude Include="KSelector.h" />
+    <ClInclude Include="MeanKSelector.h" />
+    <ClInclude Include="PercentageKSelector.h" />
     <ClInclude Include="SampleReader.h" />
     <ClInclude Include="Sequence.h" />
     <ClInclude Include="SharedStringComparator.h" />

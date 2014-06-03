@@ -17,6 +17,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SequenceTest.cpp" />
+    <ClCompile Include="AssemblerTest.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="KSelectorsTest.cpp" />
+    <ClCompile Include="GeneratorTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="in1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestHelpers.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{125BABAF-EC1B-4526-98CE-A93081D980A9}</ProjectGuid>

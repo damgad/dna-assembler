@@ -3,10 +3,10 @@
 #include<sstream>
 #include<vector>
 
-#include<boost\program_options.hpp>
-#include<boost\graph\adjacency_list.hpp>
-#include<boost\graph\graphviz.hpp>
-#include<boost\graph\graph_traits.hpp>
+#include<boost/program_options.hpp>
+#include<boost/graph/adjacency_list.hpp>
+#include<boost/graph/graphviz.hpp>
+#include<boost/graph/graph_traits.hpp>
 
 #include "SampleReader.h"
 #include "SharedStringComparator.h"
@@ -19,7 +19,7 @@ void atExit() {
 }
 
 int main(int argc, char **argv) {
-	
+
 	#ifdef _DEBUG
 	atexit(atExit);
 	#endif // _DEBUG
@@ -147,6 +147,6 @@ int main(int argc, char **argv) {
 			return 0;
 		}
 		boost::write_graphviz(dot_file_stream, de_bruijn_graph, make_label_writer(&vertices[0]));
-		
+
 	return 0;
 }
