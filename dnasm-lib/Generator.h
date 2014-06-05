@@ -3,28 +3,30 @@
 
 #include "Sequence.h"
 
-class Generator{
-public:
+namespace dnasm {
+    class Generator{
+    public:
 
-   Generator();
+       Generator();
 
-   void setInputSequence(Sequence sequence);
-   void readInputSequence(std::string filename);
-   void randomInputSequence();
-   void setFragmentsLength(int length);
-   void setFragmentsNb(int number);
-   void setCorectness(bool correct);
-   void setOutputFilename(std::string filename);
-   void operator()() const;
+       void setInputSequence(Sequence sequence);
+       void readInputSequence(std::string filename);
+       void randomInputSequence();
+       void setFragmentsLength(int length);
+       void setFragmentsNb(int number);
+       void setCorectness(bool correct);
+       void setOutputFilename(std::string filename);
+       void operator()() const;
 
-private:
-    Sequence inputSequence_;
-    std::string outputFilename_;
-    int fragmentsLength_;
-    int fragmentsNb_;
-    bool correct_;
+    private:
+        Sequence inputSequence_;
+        std::string outputFilename_;
+        int fragmentsLength_;
+        int fragmentsNb_;
+        bool correct_;
 
-    void generate(std::ostream & outStream) const;
-};
+        void generate(std::ostream & outStream) const;
+    };
+}
 
 #endif

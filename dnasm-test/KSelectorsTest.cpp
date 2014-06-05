@@ -5,6 +5,8 @@
 #include "MeanKSelector.h"
 #include "PercentageKSelector.h"
 
+using namespace dnasm;
+
 BOOST_AUTO_TEST_CASE ( fixed_selecting ){
     FixedKSelector fixedSelector(18);
     BOOST_CHECK_EQUAL( fixedSelector.calculateK(std::list<Sequence>()), 18 );

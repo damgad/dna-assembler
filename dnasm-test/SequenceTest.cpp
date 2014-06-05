@@ -3,6 +3,8 @@
 #include <string>
 #include "Sequence.h"
 
+using namespace dnasm;
+
 BOOST_AUTO_TEST_CASE( sequence_construction ){
 	Sequence sequence = Sequence(std::string("GUAGTA"));
 	std::forward_list<Sequence> subSequences = sequence.getSubsequences(4);

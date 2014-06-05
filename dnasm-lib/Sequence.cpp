@@ -1,42 +1,46 @@
 #include <string>
 #include "Sequence.h"
 
-Sequence::Sequence() : sequence_(){
-}
+namespace dnasm {
 
-Sequence::Sequence(std::string sequence) : sequence_(sequence){
-    //TODO: check with alphabet
-}
+    Sequence::Sequence() : sequence_(){
+    }
 
-int Sequence::operator<(const Sequence& other) const{
-	return getLength()<other.getLength();
-}
+    Sequence::Sequence(std::string sequence) : sequence_(sequence){
+        //TODO: check with alphabet
+    }
 
-std::forward_list<Sequence> Sequence::getSubsequences(int length) const{
-	if (getLength() < length){
-		return std::forward_list<Sequence>();
-	}
-	std::forward_list<Sequence> output;
-	for (int i = getLength() - length ; i>=0 ; --i ){
-		output.push_front(subsequence(i,length));
-	}
-	return output;
-}
+    int Sequence::operator<(const Sequence& other) const{
+	    return getLength()<other.getLength();
+    }
+
+    std::forward_list<Sequence> Sequence::getSubsequences(int length) const{
+	    if (getLength() < length){
+		    return std::forward_list<Sequence>();
+	    }
+	    std::forward_list<Sequence> output;
+	    for (int i = getLength() - length ; i>=0 ; --i ){
+		    output.push_front(subsequence(i,length));
+	    }
+	    return output;
+    }
 
 
-Sequence Sequence::subsequence(int offset, int length) const{
-    return Sequence(sequence_.substr(offset,length));
-}
+    Sequence Sequence::subsequence(int offset, int length) const{
+        return Sequence(sequence_.substr(offset,length));
+    }
 
-int Sequence::getLength() const{
-	return sequence_.size();
-}
+    int Sequence::getLength() const{
+	    return sequence_.size();
+    }
 
-std::ostream& operator<<(std::ostream &outputStream, const Sequence &sequence) {
-	outputStream << sequence.sequence_ << std::endl;
-	return outputStream;
-}
+    std::ostream& operator<<(std::ostream &outputStream, const Sequence &sequence) {
+	    outputStream << sequence.sequence_ << std::endl;
+	    return outputStream;
+    }
 
-std::string Sequence::toString() const{
-    return sequence_;
+    std::string Sequence::toString() const{
+        return sequence_;
+    }
+
 }

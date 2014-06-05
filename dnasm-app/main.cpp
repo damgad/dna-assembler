@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	shared_ptr<SampleReader> sample_reader(0);
+	shared_ptr<dnasm::SampleReader> sample_reader(0);
 	// open input file for reading
 	if(vm.count("input-file")) {
 		std::string input_file_name = vm["input-file"].as<std::string>();
@@ -64,9 +64,9 @@ int main(int argc, char **argv) {
 			std::cerr << "Could not open file \"" << input_file_name << "\" for reading." << std::endl;
 			return 0;
 		}
-		sample_reader.reset(new SampleReader(input_file_stream));
+		sample_reader.reset(new dnasm::SampleReader(input_file_stream));
 	} else {
-		sample_reader.reset(new SampleReader());
+		sample_reader.reset(new dnasm::SampleReader());
 	}
 
 	// parse k and K parameters
@@ -80,15 +80,15 @@ int main(int argc, char **argv) {
 	} else if(vm.count("K")) {
 		std::string K(vm["K"].as<std::string>());
 		if(K == "A") {
-			sample_reader->setKSelectMethod(KSelectMethod::MEAN_VALUE);
+			sample_reader->setKSelectMethod(dnasm::KSelectMethod::MEAN_VALUE);
 		} else if(K == "M") {
-			sample_reader->setKSelectMethod(KSelectMethod::MEDIAN_VALUE);
+			sample_reader->setKSelectMethod(dnasm::KSelectMethod::MEDIAN_VALUE);
 		} else {
 			int N = -1;
 			std::stringstream ss;
 			ss << K;
 			ss >> N;
-			if(sample_reader->setKSelectMethod(KSelectMethod::N_PER_CENT, N)) {
+			if(sample_reader->setKSelectMethod(dnasm::KSelectMethod::N_PER_CENT, N)) {
 				std::cerr << "Invalid 'K' parameter value: " << N << "(must be 'A', 'M' or between 0 and 99)." << std::endl;
 				return 0;
 			}

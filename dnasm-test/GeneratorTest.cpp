@@ -5,6 +5,7 @@
 #include <forward_list>
 
 #include "Generator.h"
+using namespace dnasm;
 
 /*BOOST_AUTO_TEST_CASE (correct_fromfile_generating){
     Generator generator;

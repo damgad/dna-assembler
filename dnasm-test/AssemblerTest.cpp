@@ -5,9 +5,11 @@
 #include "Assembler.h"
 #include "Sequence.h"
 
+using namespace dnasm;
+
 BOOST_AUTO_TEST_CASE ( input_reading ){
-    Assembler dnasm("in1.txt");
-    const std::list<Sequence> unparsedSequences= dnasm.getUnparsedSequences();
+    Assembler dnaAssembler("in1.txt");
+    const std::list<Sequence> unparsedSequences= dnaAssembler.getUnparsedSequences();
     auto it = unparsedSequences.begin();
     BOOST_CHECK_EQUAL( unparsedSequences.size() , 5 );
     BOOST_CHECK_EQUAL( (*it++).toString(), std::string("GUAGAATAGUATAGUTAGATUG") );

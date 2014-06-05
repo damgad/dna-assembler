@@ -1,8 +1,11 @@
 #include "FixedKSelector.h"
 
-FixedKSelector::FixedKSelector(int k) :  k_(k) {
-} 
+namespace dnasm {
 
-int FixedKSelector::calculateK(std::list<Sequence> reads) const { 
-    return k_; 
+    FixedKSelector::FixedKSelector(int k) :  k_(k) {
+    } 
+
+    int FixedKSelector::calculateK(std::list<Sequence> reads) const { 
+        return k_; 
+    }
 }
