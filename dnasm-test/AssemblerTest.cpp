@@ -8,7 +8,8 @@
 using namespace dnasm;
 
 BOOST_AUTO_TEST_CASE ( input_reading ){
-    Assembler dnaAssembler("in1.txt");
+    Assembler dnaAssembler;
+    dnaAssembler.readInputFile("in1.txt");
     const std::list<Sequence> unparsedSequences= dnaAssembler.getUnparsedSequences();
     auto it = unparsedSequences.begin();
     BOOST_CHECK_EQUAL( unparsedSequences.size() , 5 );

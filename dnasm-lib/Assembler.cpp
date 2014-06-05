@@ -7,9 +7,11 @@
 #include "Exceptions.h"
 
 namespace dnasm {
-
-    Assembler::Assembler(const std::string & filenameIn){
-        readInputFile(filenameIn);
+    void Assembler::readInputStream(std::istream & stream){
+        std::string read;
+        while(std::getline(stream, read) && !read.empty()){
+            unparsedInputSequences_.push_back(Sequence(read)); //TODO: wrong file handling
+        }
     }
 
     void Assembler::readInputFile(const std::string & filename){
@@ -17,10 +19,8 @@ namespace dnasm {
         if(!sequencesStream.is_open()){
             throw FileNotFoundException(std::string("Unable to open file: ") + filename);
         }
-        std::string line;
-        while(std::getline(sequencesStream, line)){
-            unparsedInputSequences_.push_back(Sequence(line)); //TODO: wrong file handling
-        }
+        readInputStream(sequencesStream);
+        sequencesStream.close();
     }
 
     const std::list<Sequence>& Assembler::getUnparsedSequences() const{
@@ -28,7 +28,7 @@ namespace dnasm {
     }
 
     void Assembler::setKSelector(std::unique_ptr<KSelector> kSelector){
-        kSelectorPtr_=std::move(kSelector);
+        kSelectorPtr_.reset(std::move(kSelector));
     }
     void Assembler::setOutputFile(const std::string & filename){
         filenameOut_=filename;

@@ -7,8 +7,8 @@
 namespace dnasm {
     class Assembler{
     public:
-        Assembler(const std::string & filenameIn);
-    
+        void readInputFile(const std::string & filename);
+        void readInputStream(std::istream & stream);
         void setKSelector(std::unique_ptr<KSelector> kSelector);
         void setOutputFile(const std::string & filename);
         void setOutputDotFile(const std::string & filename);
@@ -21,7 +21,6 @@ namespace dnasm {
         std::string filenameOut_;
         std::string filenameDotOut_;
         std::unique_ptr<KSelector>  kSelectorPtr_;
-        void readInputFile(const std::string & filename);
     };
 }
 
