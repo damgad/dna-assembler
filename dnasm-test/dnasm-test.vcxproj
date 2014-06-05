@@ -25,9 +25,6 @@
   <ItemGroup>
     <Text Include="in1.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="TestHelpers.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{125BABAF-EC1B-4526-98CE-A93081D980A9}</ProjectGuid>
     <RootNamespace>dnasmtest</RootNamespace>
