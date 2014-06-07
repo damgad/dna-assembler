@@ -10,9 +10,11 @@
 #include "Generator.h"
 #include "Exceptions.h"
 
+
+
 namespace dnasm {
 
-    Generator::Generator() : correct_(false){
+    Generator::Generator() : correct_(false), outputFilename_(""){
         std::srand(std::time(NULL));
     }
 
@@ -72,14 +74,18 @@ namespace dnasm {
     }
 
     void Generator::operator()() const{
-        std::ofstream outputFile;
-        outputFile.open(outputFilename_);
-        if (outputFile.good()) {
-            generate(outputFile);
-        } else {
-            generate(std::cout);
+        if(outputFilename_.empty()){
+           generate(std::cout);
         }
-        outputFile.close();
+        else {
+            std::ofstream outputFile;
+            outputFile.open(outputFilename_);
+            if (outputFile.good()){
+                throw FileNotFoundException("Unable to open output file");
+            }
+            generate(outputFile);
+            outputFile.close();
+        }
     }
 
     void Generator::generate(std::ostream & outStream) const{

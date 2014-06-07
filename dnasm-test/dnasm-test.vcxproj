@@ -16,6 +16,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DeBrujinGraphTest.cpp" />
     <ClCompile Include="SequenceTest.cpp" />
     <ClCompile Include="AssemblerTest.cpp" />
     <ClCompile Include="main.cpp" />

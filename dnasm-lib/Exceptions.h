@@ -26,6 +26,12 @@ namespace dnasm {
 	    ~FileNotFoundException() throw () {}
     };
 
+    class WrongCallException : public AsmException {
+    public:
+	    WrongCallException(const string message) : AsmException(message) {}
+	    ~WrongCallException() throw () {}
+    };
+  
     class NotImplementedYetException : public AsmException {
     public:
 	    NotImplementedYetException(const string message) : AsmException(message) {}

@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assembler.cpp" />
+    <ClCompile Include="DeBrujinGraph.cpp" />
     <ClCompile Include="FixedKSelector.cpp" />
     <ClCompile Include="Generator.cpp" />
     <ClCompile Include="MeanKSelector.cpp" />
@@ -20,6 +21,7 @@
     <ClCompile Include="Sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DeBrujinGraph.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Assembler.h" />
     <ClInclude Include="FixedKSelector.h" />
@@ -72,6 +74,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

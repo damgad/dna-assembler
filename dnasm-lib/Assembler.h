@@ -12,7 +12,7 @@ namespace dnasm {
         void setKSelector(std::unique_ptr<KSelector> kSelector);
         void setOutputFile(const std::string & filename);
         void setOutputDotFile(const std::string & filename);
-        Sequence operator()() const;
+        void operator()() const;
         const std::list<Sequence>& getUnparsedSequences() const;
 
     private:

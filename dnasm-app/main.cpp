@@ -10,6 +10,12 @@
 
 #include "SampleReader.h"
 #include "SharedStringComparator.h"
+#include "Generator.h"
+#include "Assembler.h"
+#include "KSelector.h"
+#include "FixedKSelector.h"
+#include "PercentageKSelector.h"
+#include "MeanKSelector.h"
 
 using namespace boost::program_options;
 
@@ -54,6 +60,67 @@ int main(int argc, char **argv) {
 		std::cout << desc << std::endl;
 		return 0;
 	}
+
+    
+    if (vm.count("r")){ //generator mode
+        dnasm::Generator generator;
+        if(vm.count("input-file")){
+            generator.readInputSequence(vm["input-file"].as<std::string>());
+        }
+        if(vm.count("s")){
+            generator.setInputSequence(dnasm::Sequence(vm["s"].as<std::string>()));
+        }
+        if(vm.count("output-file")){
+            generator.setOutputFilename(vm["output-file"].as<std::string>());
+        }
+        if(vm.count("l")){
+            generator.setFragmentsLength(vm["l"].as<int>());
+        }
+        if(vm.count("n")){
+            generator.setFragmentsNb(vm["n"].as<int>());
+        }
+        if(vm.count("c")){
+            generator.setCorectness(true);
+        }
+        generator();
+        return 0;
+
+    }else { //assembler mode
+        dnasm::Assembler assembler;
+        if(vm.count("input-file")){
+            assembler.readInputFile(vm["input-file"].as<std::string>());
+        } else {
+            assembler.readInputStream(std::cin);
+        } 
+        if (vm.count("output-file")){
+            assembler.setOutputFile(vm["output-file"].as<std::string>());   
+        }
+        if (vm.count("d")){
+            assembler.setOutputDotFile(vm["d"].as<std::string>());
+        }
+        if (vm.count("k")){
+            assembler.setKSelector(std::unique_ptr<dnasm::KSelector>(new dnasm::FixedKSelector(vm["k"].as<int>())));
+        } else if (vm.count("K")){            
+            switch (vm["K"].as<char>()){
+            case 'A':
+                assembler.setKSelector(std::unique_ptr<dnasm::KSelector>(new dnasm::MeanKSelector));
+                break;
+            case 'N':
+                assembler.setKSelector(std::unique_ptr<dnasm::KSelector>(new dnasm::PercentageKSelector(vm["N"].as<int>())));
+                break;
+            default:
+                assembler.setKSelector(std::unique_ptr<dnasm::KSelector>(new dnasm::PercentageKSelector));
+                break;
+            }
+        } else {
+            assembler.setKSelector(std::unique_ptr<dnasm::KSelector>(new dnasm::PercentageKSelector));
+        }
+        assembler();
+        return 0;
+    }
+
+    //assembler mode
+    
 
 	shared_ptr<dnasm::SampleReader> sample_reader(0);
 	// open input file for reading
