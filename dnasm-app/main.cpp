@@ -8,8 +8,6 @@
 #include<boost/graph/graphviz.hpp>
 #include<boost/graph/graph_traits.hpp>
 
-#include "SampleReader.h"
-#include "SharedStringComparator.h"
 #include "Generator.h"
 #include "Assembler.h"
 #include "KSelector.h"

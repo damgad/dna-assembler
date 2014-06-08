@@ -17,7 +17,6 @@
     <ClCompile Include="Generator.cpp" />
     <ClCompile Include="MeanKSelector.cpp" />
     <ClCompile Include="PercentageKSelector.cpp" />
-    <ClCompile Include="SampleReader.cpp" />
     <ClCompile Include="Sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -29,9 +28,7 @@
     <ClInclude Include="KSelector.h" />
     <ClInclude Include="MeanKSelector.h" />
     <ClInclude Include="PercentageKSelector.h" />
-    <ClInclude Include="SampleReader.h" />
     <ClInclude Include="Sequence.h" />
-    <ClInclude Include="SharedStringComparator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{72F22DF6-D47E-4286-9587-DA6167609611}</ProjectGuid>
