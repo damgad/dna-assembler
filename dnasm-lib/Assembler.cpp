@@ -44,7 +44,7 @@ namespace dnasm {
         std::for_each(unparsedInputSequences_.begin(), unparsedInputSequences_.end(), 
             [&parsedInputSequences,k](Sequence s){ 
                 std::forward_list<Sequence> subsequences = s.getSubsequences(k);
-                parsedInputSequences.insert(parsedInputSequences.begin(),subsequences.begin(), subsequences.end());
+                parsedInputSequences.insert(parsedInputSequences.end(),subsequences.begin(), subsequences.end());
         });
         DeBrujinGraph graph(parsedInputSequences);
         if(!filenameDotOut_.empty()){

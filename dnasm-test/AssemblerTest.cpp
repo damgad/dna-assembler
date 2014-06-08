@@ -5,7 +5,7 @@
 #include "Assembler.h"
 #include "Sequence.h"
 #include "FixedKSelector.h"
-
+#include "PercentageKSelector.h"
 using namespace dnasm;
 
 BOOST_AUTO_TEST_CASE ( input_reading ){
@@ -45,6 +45,21 @@ BOOST_AUTO_TEST_CASE ( equal_lengt_samples ){
     dnaAssembler.setKSelector(std::unique_ptr<KSelector>(new FixedKSelector(4)));
     dnaAssembler();
 }
+
+
+BOOST_AUTO_TEST_CASE ( test_other ){
+    Assembler dnaAssembler;
+    dnaAssembler.readInputFile("in3.txt");
+    const std::list<Sequence> unparsedSequences= dnaAssembler.getUnparsedSequences();
+    BOOST_CHECK_EQUAL( unparsedSequences.size() , 19 );
+    dnaAssembler.setOutputFile("out2.txt");
+    dnaAssembler.setOutputDotFile("dotout2.txt");
+    dnaAssembler.setKSelector(std::unique_ptr<KSelector>(new PercentageKSelector()));
+    dnaAssembler();
+}
+
+
+
 
 
 // EOF

@@ -69,6 +69,9 @@ namespace dnasm {
         boost::graph_traits<Graph>::vertex_descriptor currentVertex = 
             boost::vertex(std::distance(verticesDegrees_.begin(), std::find(verticesDegrees_.begin(), verticesDegrees_.end(), 1)), graph_);
         
+        if(currentVertex==verticesLabels_.size()){
+            currentVertex=0;
+        }
         std::string outputSequenceString = verticesLabels_[currentVertex];
         
 

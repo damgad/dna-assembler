@@ -26,6 +26,7 @@
   <ItemGroup>
     <Text Include="in1.txt" />
     <Text Include="in2.txt" />
+    <Text Include="in3.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{125BABAF-EC1B-4526-98CE-A93081D980A9}</ProjectGuid>

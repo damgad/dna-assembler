@@ -51,14 +51,17 @@ int main(int argc, char **argv) {
 
     
         if (vm.count("r")){ //generator mode
-            std::cout << "Generator mode" << std::endl;
             dnasm::Generator generator;
             if(vm.count("input-file")){
                 generator.readInputSequence(vm["input-file"].as<std::string>());
             }
-            if(vm.count("s")){
+            else if(vm.count("s")){
                 generator.setInputSequence(dnasm::Sequence(vm["s"].as<std::string>()));
+            } 
+            else {
+                generator.randomInputSequence();
             }
+
             if(vm.count("output-file")){
                 generator.setOutputFilename(vm["output-file"].as<std::string>());
             }
@@ -75,8 +78,6 @@ int main(int argc, char **argv) {
             return 0;
 
         }else { //assembler mode
-            std::cout << "Assembler mode" << std::endl;
-
             dnasm::Assembler assembler;
             if(vm.count("input-file")){
                 assembler.readInputFile(vm["input-file"].as<std::string>());

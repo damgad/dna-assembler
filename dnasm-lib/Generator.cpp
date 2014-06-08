@@ -89,7 +89,7 @@ namespace dnasm {
     }
 
     void Generator::generate(std::ostream & outStream) const{
-        int realFragmentsNb = correct_ ? inputSequence_.getLength()-fragmentsLength_ : fragmentsNb_;
+        int realFragmentsNb = correct_ ? inputSequence_.getLength()-fragmentsLength_+1 : fragmentsNb_;
     
         std::list<Sequence> fragments;
         for ( int i=0; i<realFragmentsNb ; ++i){
