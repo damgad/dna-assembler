@@ -7,7 +7,7 @@
 #include "Sequence.h"
 using namespace dnasm;
 
-BOOST_AUTO_TEST_CASE( test_one ){
+BOOST_AUTO_TEST_CASE( guat_eulerian1 ){
     std::list<Sequence> reads;
     reads.push_back(Sequence("GUAT"));
     reads.push_back(Sequence("UATT"));
@@ -21,11 +21,39 @@ BOOST_AUTO_TEST_CASE( test_one ){
     DeBrujinGraph graph(reads);
 
     BOOST_CHECK( graph.hasEulerPath() );
-    std::cout << graph;
     BOOST_CHECK_EQUAL( graph.getEulerPath().toString() , "GUATTGATAGU");
 
 }
-BOOST_AUTO_TEST_CASE( test_two ){
-	BOOST_CHECK_EQUAL( 0, NULL );
+BOOST_AUTO_TEST_CASE( ab_not_eulerian1 ){
+    std::list<Sequence> reads;
+    reads.push_back(Sequence("AAAB"));
+    reads.push_back(Sequence("AABA"));
+    reads.push_back(Sequence("ABAA"));
+    reads.push_back(Sequence("BAAB"));
+    reads.push_back(Sequence("BAAB"));
+    reads.push_back(Sequence("AABA"));
+    reads.push_back(Sequence("AABA"));
+    reads.push_back(Sequence("ABAB"));
+
+    
+    DeBrujinGraph graph(reads);
+
+    BOOST_CHECK( !graph.hasEulerPath() );
+}
+
+BOOST_AUTO_TEST_CASE( ab_eulerian1 ){
+    std::list<Sequence> reads;
+    reads.push_back(Sequence("AAAB"));
+    reads.push_back(Sequence("AABA"));
+    reads.push_back(Sequence("ABAA"));
+    reads.push_back(Sequence("BAAB"));
+    reads.push_back(Sequence("AABA"));
+    reads.push_back(Sequence("ABAB"));
+
+    
+    DeBrujinGraph graph(reads);
+
+    BOOST_CHECK( graph.hasEulerPath() );
+    BOOST_CHECK_EQUAL( graph.getEulerPath().toString() , "AAABAABAB");
 }
 // EOF

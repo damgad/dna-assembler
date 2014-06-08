@@ -8,7 +8,7 @@ using std::exception;
 using std::string;
 
 namespace dnasm {
-    class AsmException : public exception {
+    class AsmException : public std::exception {
     public:
 	    AsmException (const string message) : message_(message) {}
         ~AsmException() throw() {}

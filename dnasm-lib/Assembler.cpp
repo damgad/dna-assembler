@@ -67,6 +67,8 @@ namespace dnasm {
             }
             outFileStream << assembledSequence;
             outFileStream.close();
+        } else {
+            std::cerr << "Graph does not have Eulerian path.";
         }
     }
 }

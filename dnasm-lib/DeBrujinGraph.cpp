@@ -16,7 +16,7 @@ namespace dnasm {
       
     DeBrujinGraph::DeBrujinGraph(const std::list<Sequence> & fragments){
         std::unordered_map<std::string, int> uniqueVertices;
-        std::set<std::pair<int, int> > edges;
+        std::list<std::pair<int, int> > edges;
        for ( Sequence fragment : fragments ) {
             std::string srcVertex = fragment.subsequence(0,fragment.getLength()-1).toString();
             std::string destVertex = fragment.subsequence(1,fragment.getLength()-1).toString();
@@ -26,7 +26,7 @@ namespace dnasm {
             if(uniqueVertices.count(destVertex) == 0){
                 uniqueVertices[destVertex]=uniqueVertices.size();
             }
-            edges.insert(std::make_pair(uniqueVertices[srcVertex],uniqueVertices[destVertex]));
+            edges.push_back(std::make_pair(uniqueVertices[srcVertex],uniqueVertices[destVertex]));
         }
         verticesLabels_.resize(uniqueVertices.size());
         for ( auto tmpVertex : uniqueVertices ){
@@ -37,16 +37,13 @@ namespace dnasm {
     }
 
     std::ostream& operator<<(std::ostream &stream, const DeBrujinGraph & graph){
-        std::vector<std::string> vertices = graph.verticesLabels_;
-
-        boost::write_graphviz(stream, graph.graph_, boost::make_label_writer(&vertices[0]));
+        boost::write_graphviz(stream, graph.graph_, boost::make_label_writer(&graph.verticesLabels_[0]));
         return stream;
     }
 
     bool DeBrujinGraph::hasEulerPath(){
-
-        std::vector<int> degrees(boost::num_vertices(graph_), 0);
-        verticesDegrees_ = degrees;
+        verticesDegrees_.clear();
+        verticesDegrees_.resize(boost::num_vertices(graph_), 0);
         boost::graph_traits<Graph>::edge_iterator edgeItr, edgeEndItr;
         for(boost::tie(edgeItr, edgeEndItr) = boost::edges(graph_) ; edgeItr != edgeEndItr ; ++edgeItr){
             ++verticesDegrees_[boost::source(*edgeItr,graph_)];
@@ -54,32 +51,47 @@ namespace dnasm {
         }
         
         std::vector<int> component(boost::num_vertices(graph_));
+        bool a = std::none_of(verticesDegrees_.begin(),verticesDegrees_.end(),[](int degree){ return degree<-1 || degree>1;});
+        bool b = std::count(verticesDegrees_.begin(),verticesDegrees_.end(),-1) <= 1;
+        bool c = std::count(verticesDegrees_.begin(),verticesDegrees_.end(),1) <= 1;
+        int d = connected_components(graph_, boost::make_iterator_property_map(component.begin(), boost::get(boost::vertex_index, graph_)));
 
-        int a =connected_components(graph_, boost::make_iterator_property_map(component.begin(), boost::get(boost::vertex_index, graph_)));
-        
-        return ( std::none_of(degrees.begin(),degrees.end(),[](int degree){ return degree<-1 || degree>1;}) &&
-        std::count(degrees.begin(),degrees.end(),-1) <= 1 &&
-        std::count(degrees.begin(),degrees.end(),1) <= 1 &&
-        connected_components(graph_, boost::make_iterator_property_map(component.begin(), boost::get(boost::vertex_index, graph_))) == 1);
-    }
+        return (a  &&
+        b &&
+        c 
+         );   }
 
-    Sequence DeBrujinGraph::getEulerPath() const{
-
-        throw NotImplementedYetException("Computing Euler path is not implemented yet.");
-
+    Sequence DeBrujinGraph::getEulerPath(){
         if (verticesDegrees_.size() != boost::num_vertices(graph_)){
             throw WrongCallException("You should first check if graph has an Eulerian path.");
-        }
-        boost::graph_traits<Graph>::vertex_iterator vertexItr, vertexEndItr;
-        for(boost::tie(vertexItr, vertexEndItr) = boost::vertices(graph_); vertexItr != vertexEndItr; ++vertexItr){
-            if(verticesDegrees_[*vertexItr] == -1){
-                //end
+        }    
+
+        boost::graph_traits<Graph>::vertex_descriptor currentVertex = 
+            boost::vertex(std::distance(verticesDegrees_.begin(), std::find(verticesDegrees_.begin(), verticesDegrees_.end(), 1)), graph_);
+        
+        std::string outputSequenceString = verticesLabels_[currentVertex];
+        
+
+        while(boost::out_degree(currentVertex, graph_) > 0){
+            boost::graph_traits<Graph>::out_edge_iterator edgeItr, edgeEndItr;
+            for(boost::tie(edgeItr, edgeEndItr) = boost::out_edges(currentVertex, graph_); edgeItr != edgeEndItr ; ++edgeItr){
+                std::vector<unsigned long> verticesGroupsIds(num_vertices(graph_), 0);
+                strong_components(graph_, boost::make_iterator_property_map(verticesGroupsIds.begin(), get(boost::vertex_index, graph_), verticesGroupsIds[0]));
+                if(verticesGroupsIds[currentVertex] == verticesGroupsIds[boost::target(*edgeItr,graph_)]){
+                    break;
+                }
+
             }
-            if(verticesDegrees_[*vertexItr] == 1){
-                //start
+            if(edgeItr == edgeEndItr) {
+                --edgeItr;
             }
+            currentVertex = boost::target(*edgeItr, graph_);
+            outputSequenceString += verticesLabels_[currentVertex].at(verticesLabels_[currentVertex].size()-1);
+
+            boost::remove_edge(*edgeItr, graph_);
         }
-        return Sequence("ALA");
+        
+        return Sequence(outputSequenceString);
     }
 
 }

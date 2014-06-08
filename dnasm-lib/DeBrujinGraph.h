@@ -12,7 +12,7 @@ namespace dnasm {
     public:
         DeBrujinGraph(const std::list<Sequence> & fragments);
         bool hasEulerPath();
-        Sequence getEulerPath() const;
+        Sequence getEulerPath();
 
     private:
         friend std::ostream& operator<<(std::ostream &os, const DeBrujinGraph & graph);
