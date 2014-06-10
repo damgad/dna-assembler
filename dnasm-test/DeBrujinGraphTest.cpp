@@ -1,6 +1,4 @@
-
 #include <boost/test/unit_test.hpp>
-
 #include <list>
 #include "DeBrujinGraph.h"
 #include "Generator.h"

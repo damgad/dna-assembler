@@ -1,4 +1,6 @@
 #include <boost/test/unit_test.hpp>
+#include <iostream>
+#include <fstream>
 #include <forward_list>
 #include <string>
 #include <forward_list>
@@ -8,7 +10,7 @@
 #include "PercentageKSelector.h"
 using namespace dnasm;
 
-BOOST_AUTO_TEST_CASE ( input_reading ){
+BOOST_AUTO_TEST_CASE ( input_file_reading ){
     Assembler dnaAssembler;
     dnaAssembler.readInputFile("in1.txt");
     const std::list<Sequence> unparsedSequences= dnaAssembler.getUnparsedSequences();
@@ -19,11 +21,6 @@ BOOST_AUTO_TEST_CASE ( input_reading ){
 	BOOST_CHECK_EQUAL( (*it++).toString(), std::string("GUGUAGUAGUGUATGAUTAG") );
     BOOST_CHECK_EQUAL( (*it++).toString(), std::string("ATGUGATGAUTGAUTAGUATGAUTAG") );
     BOOST_CHECK_EQUAL( (*it++).toString(), std::string("UGUATGAUTAGGUGUAGUAG") );
-
-    dnaAssembler.setOutputFile("out1.txt");
-    dnaAssembler.setOutputDotFile("dotout1.txt");
-    dnaAssembler.setKSelector(std::unique_ptr<KSelector>(new FixedKSelector()));
-    dnaAssembler();
 }
 
 BOOST_AUTO_TEST_CASE ( equal_lengt_samples ){
@@ -41,21 +38,33 @@ BOOST_AUTO_TEST_CASE ( equal_lengt_samples ){
     BOOST_CHECK_EQUAL( (*it++).toString(), std::string("ATAG") );
     BOOST_CHECK_EQUAL( (*it++).toString(), std::string("TAGU") );
     dnaAssembler.setOutputFile("out2.txt");
-    dnaAssembler.setOutputDotFile("dotout2.txt");
     dnaAssembler.setKSelector(std::unique_ptr<KSelector>(new FixedKSelector(4)));
     dnaAssembler();
+    std::ifstream output("out2.txt");
+    std::string outputSequence;
+    if(output.good()){
+        output >> outputSequence;
+    }
+    BOOST_CHECK_EQUAL( outputSequence , "GUATTGATAGU");
+
 }
 
 
-BOOST_AUTO_TEST_CASE ( test_other ){
+BOOST_AUTO_TEST_CASE ( assembling_test ){
     Assembler dnaAssembler;
     dnaAssembler.readInputFile("in3.txt");
     const std::list<Sequence> unparsedSequences= dnaAssembler.getUnparsedSequences();
     BOOST_CHECK_EQUAL( unparsedSequences.size() , 19 );
-    dnaAssembler.setOutputFile("out2.txt");
-    dnaAssembler.setOutputDotFile("dotout2.txt");
+    dnaAssembler.setOutputFile("out3.txt");
     dnaAssembler.setKSelector(std::unique_ptr<KSelector>(new PercentageKSelector()));
     dnaAssembler();
+
+    std::ifstream output("out3.txt");
+    std::string outputSequence;
+    if(output.good()){
+        output >> outputSequence;
+    }
+    BOOST_CHECK_EQUAL( outputSequence , "GUATAGUGUGUGUAGUAGUGUA");
 }
 
 

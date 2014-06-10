@@ -80,7 +80,7 @@ namespace dnasm {
         else {
             std::ofstream outputFile;
             outputFile.open(outputFilename_);
-            if (outputFile.good()){
+            if (!outputFile.good()){
                 throw FileNotFoundException("Unable to open output file");
             }
             generate(outputFile);

@@ -24,6 +24,7 @@
     <ClCompile Include="GeneratorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="in-seq1.txt" />
     <Text Include="in1.txt" />
     <Text Include="in2.txt" />
     <Text Include="in3.txt" />
