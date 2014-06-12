@@ -47,5 +47,8 @@
     <Text Include="in-seq1.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="in4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

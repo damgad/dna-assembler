@@ -37,6 +37,9 @@ namespace dnasm {
     }
 
     std::ostream& operator<<(std::ostream &stream, const DeBrujinGraph & graph){
+        if (graph.verticesLabels_.size() == 0){
+            throw WrongCallException("Unable to generate DOT represantation of empty graph. Check input sequences and k parameter.");
+        }
         boost::write_graphviz(stream, graph.graph_, boost::make_label_writer(&graph.verticesLabels_[0]));
         return stream;
     }
@@ -71,6 +74,9 @@ namespace dnasm {
         
         if(currentVertex==verticesLabels_.size()){
             currentVertex=0;
+        }
+        if(verticesLabels_.size() == 0){
+            throw WrongCallException("Unable assembly sequence. Check input sequences and k parameter.");
         }
         std::string outputSequenceString = verticesLabels_[currentVertex];
         
